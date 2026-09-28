@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Power Connect - Email Verification</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #f4f7f9;
+        color: #333333;
+      }
+      .container {
+        max-width: 500px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        padding: 35px;
+        border-radius: 10px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+      }
+      .logo {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+      .logo h1 {
+        margin: 0;
+        color: #2563eb;
+        font-size: 28px;
+      }
+      .content h2 {
+        margin-bottom: 15px;
+        color: #222222;
+      }
+      .content p {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #555555;
+      }
+      .otp {
+        display: block;
+        width: fit-content;
+        margin: 25px auto;
+        padding: 14px 28px;
+        background-color: #eff6ff;
+        color: #2563eb;
+        font-size: 30px;
+        font-weight: bold;
+        letter-spacing: 8px;
+        border-radius: 6px;
+      }
+      .warning {
+        font-size: 13px;
+        color: #777777;
+      }
+      .footer {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #eeeeee;
+        text-align: center;
+        font-size: 12px;
+        color: #999999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo"><h1>Power Connect</h1></div>
+      <div class="content">
+        <h2>Email Verification</h2>
+        <p>Hello <%= name %>,</p>
+        <p>
+          We received a request to verify the email address
+          <strong><%= email %></strong> for your Power Connect account.
+        </p>
+        <p>Please use the following OTP to verify your email address:</p>
+        <div class="otp"><%= otpValue %></div>
+        <p class="warning">
+          This OTP will expire in
+          <strong><%= expirationMinutes %> minutes</strong>.
+        </p>
+        <p class="warning">
+          If you did not request this email verification, you can safely ignore
+          this email.
+        </p>
+      </div>
+      <div class="footer">
+        &copy; <%= new Date().getFullYear() %> Power Connect. All rights
+        reserved.
+      </div>
+    </div>
+  </body>
+</html>

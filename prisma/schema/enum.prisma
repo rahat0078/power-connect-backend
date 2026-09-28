@@ -3,6 +3,10 @@ enum Role {
   PROVIDER
   ADMIN
 }
+enum AuthProvider {
+  GOOGLE
+  CREDENTIAL
+}
 
 enum UserStatus {
   BLOCKED
