@@ -1,10 +1,50 @@
 enum Role {
-    RESIDENT
-    PROVIDER
-    ADMIN
+  RESIDENT
+  PROVIDER
+  ADMIN
 }
 
 enum UserStatus {
-    BLOCKED
-    ACTIVE
+  BLOCKED
+  ACTIVE
+}
+
+enum ScheduleStatus {
+  SCHEDULED
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum OutageStatus {
+  PENDING
+  INVESTIGATING
+  RESOLVED
+  REJECTED
+}
+
+enum ServiceStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  STRIPE
+  BKASH
+  SSLCOMMERZ
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELLED
 }

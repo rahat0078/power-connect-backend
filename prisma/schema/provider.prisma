@@ -8,7 +8,9 @@ model ProviderProfile {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user            User             @relation(fields: [userId], references: [id])
+  services        PowerService[]
+  serviceRequests ServiceRequest[] @relation("ProviderRequests")
 
   @@map("provider_profiles")
 }

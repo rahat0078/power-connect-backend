@@ -1,0 +1,17 @@
+model PowerService {
+  id          String        @id @default(uuid())
+  providerId  String
+  name        String
+  description String
+  price       Decimal       @db.Decimal(10, 2)
+  capacity    String
+  status      ServiceStatus @default(ACTIVE)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+
+  provider        ProviderProfile  @relation(fields: [providerId], references: [id])
+  serviceRequests ServiceRequest[]
+
+  @@map("power_services")
+}
