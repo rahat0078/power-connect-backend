@@ -48,8 +48,9 @@ const getSingleSchedule = catchAsync(async (req: Request, res: Response) => {
 const updateSchedule = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const payload = req.body;
+  const {userId} = req.user!
 
-  const result = await ScheduleService.updateSchedule(id as string, payload);
+  const result = await ScheduleService.updateSchedule(id as string, payload, userId);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -61,8 +62,9 @@ const updateSchedule = catchAsync(async (req: Request, res: Response) => {
 
 const deleteSchedule = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
+  const { userId } = req.user!;
 
-  const result = await ScheduleService.deleteSchedule(id as string);
+  const result = await ScheduleService.deleteSchedule(id as string, userId);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

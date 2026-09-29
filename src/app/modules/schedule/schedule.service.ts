@@ -1,8 +1,14 @@
 import httpStatus from "http-status";
 import { prisma } from "../../lib/prisma";
 import { AppError } from "../../utils/AppError";
-import { ICreateSchedulePayload, IScheduleQuery, IUpdateSchedulePayload } from "./schedule.interface";
+import {
+  ICreateSchedulePayload,
+  IScheduleQuery,
+  IUpdateSchedulePayload,
+} from "./schedule.interface";
 import { Prisma, ScheduleStatus } from "../../../generated/prisma/client";
+import { AuditLogService } from "../auditLog/auditLog.service";
+import { AUDIT_ACTION, AUDIT_ENTITY } from "../../constants/audit.constant";
 
 const createSchedule = async (
   payload: ICreateSchedulePayload,
@@ -24,17 +30,33 @@ const createSchedule = async (
     );
   }
 
-  const result = await prisma.powerSchedule.create({
-    data: {
-      area: payload.area,
-      startTime: new Date(payload.startTime),
-      endTime: new Date(payload.endTime),
-      description: payload.description ?? null,
-      createdById: userId,
-    },
+  const transactionResult = await prisma.$transaction(async (tx) => {
+    const result = await tx.powerSchedule.create({
+      data: {
+        area: payload.area,
+        startTime: new Date(payload.startTime),
+        endTime: new Date(payload.endTime),
+        description: payload.description ?? null,
+        createdById: userId,
+      },
+    });
+
+    await AuditLogService.createAuditLog({
+      userId,
+      action: AUDIT_ACTION.CREATE,
+      entity: AUDIT_ENTITY.POWER_SCHEDULE,
+      entityId: result.id,
+      metadata: {
+        area: result.area,
+        startTime: result.startTime,
+        endTime: result.endTime,
+        status: result.status,
+      },
+    });
+    return result;
   });
 
-  return result;
+  return transactionResult;
 };
 
 const getAllSchedules = async (query: IScheduleQuery) => {
@@ -47,7 +69,6 @@ const getAllSchedules = async (query: IScheduleQuery) => {
 
   const andConditions: Prisma.PowerScheduleWhereInput[] = [];
 
-  
   andConditions.push({
     deletedAt: null,
   });
@@ -147,7 +168,11 @@ const getSingleSchedule = async (id: string) => {
   return result;
 };
 
-const updateSchedule = async (id: string, payload: IUpdateSchedulePayload) => {
+const updateSchedule = async (
+  id: string,
+  payload: IUpdateSchedulePayload,
+  userId: string
+) => {
   const isExist = await prisma.powerSchedule.findFirst({
     where: {
       id,
@@ -178,7 +203,7 @@ const updateSchedule = async (id: string, payload: IUpdateSchedulePayload) => {
   if (effectiveEndTime <= effectiveStartTime) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      "End time must be after start time",
+      "End time must be after start time"
     );
   }
 
@@ -187,10 +212,25 @@ const updateSchedule = async (id: string, payload: IUpdateSchedulePayload) => {
     data: updateData,
   });
 
+  // Audit Log Integration
+  await AuditLogService.createAuditLog({
+    userId,
+    action: AUDIT_ACTION.UPDATE,
+    entity: AUDIT_ENTITY.POWER_SCHEDULE,
+    entityId: result.id,
+    metadata: {
+      updatedFields: Object.keys(payload),
+      previousArea: isExist.area,
+      newArea: result.area,
+      previousStatus: isExist.status,
+      newStatus: result.status,
+    },
+  });
+
   return result;
 };
 
-const deleteSchedule = async (id: string) => {
+const deleteSchedule = async (id: string, userId: string) => {
   const isExist = await prisma.powerSchedule.findFirst({
     where: {
       id,
@@ -202,10 +242,23 @@ const deleteSchedule = async (id: string) => {
     throw new AppError(httpStatus.NOT_FOUND, "Schedule not found");
   }
 
+  // Soft Delete Operation
   const result = await prisma.powerSchedule.update({
     where: { id },
     data: {
       deletedAt: new Date(),
+    },
+  });
+
+  // Audit Log Integration (Soft delete explicitly tracked as DELETE)
+  await AuditLogService.createAuditLog({
+    userId,
+    action: AUDIT_ACTION.DELETE,
+    entity: AUDIT_ENTITY.POWER_SCHEDULE,
+    entityId: result.id,
+    metadata: {
+      deletedAt: result.deletedAt,
+      area: result.area,
     },
   });
 

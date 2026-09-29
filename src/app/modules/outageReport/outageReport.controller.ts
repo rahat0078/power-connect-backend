@@ -50,8 +50,9 @@ const getAllOutageReports = catchAsync(async (req: Request, res: Response) => {
 const updateOutageReportStatus = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const payload = req.body;
+    const { userId } = req.user!;
 
-    const result = await OutageReportService.updateOutageReportStatus( id as string, payload);
+    const result = await OutageReportService.updateOutageReportStatus(id as string, payload, userId);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,

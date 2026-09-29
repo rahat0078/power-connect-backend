@@ -8,6 +8,8 @@ import { prisma } from "../../lib/prisma";
 import { OutageStatus } from "../../../generated/prisma/enums";
 import { Prisma } from "../../../generated/prisma/client";
 import { AppError } from "../../utils/AppError";
+import { AUDIT_ACTION, AUDIT_ENTITY } from "../../constants/audit.constant";
+import { AuditLogService } from "../auditLog/auditLog.service";
 
 const createOutageReport = async (
   payload: ICreateOutageReportPayload,
@@ -193,6 +195,7 @@ const getAllOutageReports = async (query: IOutageReportQuery) => {
 const updateOutageReportStatus = async (
   id: string,
   payload: IUpdateOutageReportStatusPayload,
+  userId: string
 ) => {
   const isExist = await prisma.outageReport.findUnique({
     where: { id },
@@ -208,18 +211,31 @@ const updateOutageReportStatus = async (
   ) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      "Outage report is already marked as RESOLVED",
+      "Outage report is already marked as RESOLVED"
     );
   }
 
-  const resolvedAt =
-    payload.status === OutageStatus.RESOLVED ? new Date() : null;
+  const resolvedAt = payload.status === OutageStatus.RESOLVED ? new Date() : null;
 
   const result = await prisma.outageReport.update({
     where: { id },
     data: {
       status: payload.status,
       resolvedAt,
+    },
+  });
+
+  // Audit Log Integration
+  await AuditLogService.createAuditLog({
+    userId,
+    action: AUDIT_ACTION.UPDATE_STATUS,
+    entity: AUDIT_ENTITY.OUTAGE_REPORT,
+    entityId: result.id,
+    metadata: {
+      previousStatus: isExist.status,
+      newStatus: result.status,
+      area: result.area,
+      resolvedAt: result.resolvedAt,
     },
   });
 
