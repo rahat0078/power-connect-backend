@@ -7,10 +7,10 @@ import { AuthService } from "./auth.service";
 import { AppError } from "../../utils/AppError";
 import config from "../../config";
 
-const registerPatient = catchAsync(async (req: Request, res: Response) => {
+const registerUser = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
 
-  await AuthService.registerPatient(payload);
+  await AuthService.registerUser(payload);
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
@@ -20,10 +20,10 @@ const registerPatient = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const verifyPatientEmail = catchAsync(async (req: Request, res: Response) => {
+const verifyUserEmail = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
 
-  const result = await AuthService.verifyPatientEmail(payload);
+  const result = await AuthService.verifyUserEmail(payload);
 
   const { accessToken, refreshToken, user } = result;
 
@@ -43,7 +43,7 @@ const verifyPatientEmail = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
-    message: "Patient registered successfully",
+    message: "User registered successfully",
     data: {
       accessToken,
       refreshToken,
@@ -162,10 +162,10 @@ const googleLogin = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const AuthController = {
-  registerPatient,
+  registerUser,
   loginUser,
   getMe,
   refreshToken,
   googleLogin,
-  verifyPatientEmail,
+  verifyUserEmail,
 };

@@ -5,7 +5,7 @@ export interface ILoginUserPayload {
 	password: string;
 }
 
-export interface IVerifyPatientPayload {
+export interface IVerifyUserPayload {
 	email: string;
 	otp: string;
 }

@@ -20,7 +20,9 @@ export default {
   redis_port: process.env.REDIS_PORT!,
   sender_email: process.env.SENDER_EMAIL!,
   smtp_password: process.env.SMTP_PASSWORD!,
-	smtp_user: process.env.SMTP_USER!,
+  smtp_user: process.env.SMTP_USER!,
   google_client_id: process.env.GOOGLE_CLIENT_ID!,
-  
+  seed_admin_email: process.env.SEED_ADMIN_EMAIL!,
+  seed_admin_password: process.env.SEED_ADMIN_PASSWORD!,
+  seed_admin_name: process.env.SEED_ADMIN_NAME!
 };

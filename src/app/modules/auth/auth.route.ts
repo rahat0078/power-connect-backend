@@ -10,13 +10,13 @@ const router = Router();
 router.post(
   "/register",
   validateRequest(UserValidation.RegistrationZodSchema),
-  AuthController.registerPatient,
+  AuthController.registerUser,
 );
 
 router.post(
   "/verify-email",
   validateRequest(UserValidation.VerificationZodSchema),
-  AuthController.verifyPatientEmail,
+  AuthController.verifyUserEmail,
 );
 
 router.post(

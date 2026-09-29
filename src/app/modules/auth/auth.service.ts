@@ -15,7 +15,7 @@ import type {
   ILoginUserPayload,
   IRegisterPayload,
   IRequestUser,
-  IVerifyPatientPayload,
+  IVerifyUserPayload,
 } from "./auth.interface";
 import crypto from "crypto";
 import ejs from "ejs";
@@ -27,7 +27,7 @@ import { transporter } from "../../lib/nodemailer";
 import { prisma } from "../../lib/prisma";
 import { googleClient } from "../../lib/googleAuth";
 
-const registerPatient = async (payload: IRegisterPayload) => {
+const registerUser = async (payload: IRegisterPayload) => {
   const { name, password } = payload;
 
   const email = payload.email.trim().toLowerCase();
@@ -92,7 +92,7 @@ const registerPatient = async (payload: IRegisterPayload) => {
   return {};
 };
 
-const verifyPatientEmail = async (payload: IVerifyPatientPayload) => {
+const verifyUserEmail = async (payload: IVerifyUserPayload) => {
   const email = payload.email.trim().toLowerCase();
   const { otp } = payload;
 
@@ -457,8 +457,8 @@ const googleLogin = async (payload: IGoogleLoginPayload) => {
 };
 
 export const AuthService = {
-  registerPatient,
-  verifyPatientEmail,
+  registerUser,
+  verifyUserEmail,
   loginUser,
   getMe,
   refreshToken,
