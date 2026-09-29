@@ -11,32 +11,24 @@ router.post(
   "/",
   auth(Role.ADMIN),
   validateRequest(ScheduleValidation.createScheduleZodSchema),
-  ScheduleController.createSchedule
+  ScheduleController.createSchedule,
 );
 
-router.get(
-  "/",
-  auth(Role.ADMIN, Role.PROVIDER, Role.RESIDENT),
-  ScheduleController.getAllSchedules
-);
+router.get("/", ScheduleController.getAllSchedules);
 
 router.get(
   "/:id",
   auth(Role.ADMIN, Role.PROVIDER, Role.RESIDENT),
-  ScheduleController.getSingleSchedule
+  ScheduleController.getSingleSchedule,
 );
 
 router.patch(
   "/:id",
   auth(Role.ADMIN),
   validateRequest(ScheduleValidation.updateScheduleZodSchema),
-  ScheduleController.updateSchedule
+  ScheduleController.updateSchedule,
 );
 
-router.delete(
-  "/:id",
-  auth(Role.ADMIN),
-  ScheduleController.deleteSchedule
-);
+router.delete("/:id", auth(Role.ADMIN), ScheduleController.deleteSchedule);
 
 export const ScheduleRoutes = router;
