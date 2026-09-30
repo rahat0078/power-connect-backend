@@ -9,7 +9,12 @@ const router = express.Router();
 
 // Public get all ; get single
 
-// Provider Routes
+router.get('/', PowerServiceController.getAllPowerServices);
+
+
+router.get('/single/:id', PowerServiceController.getSinglePowerService);
+
+
 router.get(
   "/my-services",
   auth(Role.PROVIDER),

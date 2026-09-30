@@ -2,14 +2,12 @@ import { z } from "zod";
 import { ServiceStatus } from "../../../generated/prisma/enums";
 
 const createPowerServiceZodSchema = z.object({
-  body: z.object({
-    name: z.string("Service name is required"),
-    description: z.string("Description is required"),
-    price: z
-      .number("Price is required")
-      .positive("Price must be a positive number"),
-    capacity: z.string("Capacity is required"),
-  }),
+  name: z.string("Service name is required"),
+  description: z.string("Description is required"),
+  price: z
+    .number("Price is required")
+    .positive("Price must be a positive number"),
+  capacity: z.string("Capacity is required"),
 });
 
 const updatePowerServiceZodSchema = z.object({

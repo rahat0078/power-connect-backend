@@ -19,3 +19,13 @@ export type IUpdatePowerServicePayload = {
 export type IUpdatePowerServiceStatusPayload = {
   status: ServiceStatus;
 };
+
+export type IPowerServiceFilterRequest = {
+  searchTerm?: string;
+  status?: ServiceStatus;
+  minPrice?: string;
+  maxPrice?: string;
+  limit?: number;
+  page?: number;
+  
+};

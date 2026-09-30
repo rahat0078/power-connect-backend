@@ -2,11 +2,13 @@ import httpStatus from "http-status";
 import { prisma } from "../../lib/prisma";
 import {
   ICreatePowerServicePayload,
+  IPowerServiceFilterRequest,
   IUpdatePowerServicePayload,
   IUpdatePowerServiceStatusPayload,
 } from "./powerService.interface";
 import { AppError } from "../../utils/AppError";
-import { AuditLogService } from "../auditLog/auditLog.service";
+import { ServiceStatus } from "../../../generated/prisma/enums";
+import { Prisma } from "../../../generated/prisma/client";
 
 const createPowerService = async (
   userId: string,
@@ -26,6 +28,99 @@ const createPowerService = async (
       providerId: provider.id,
     },
   });
+
+  return result;
+};
+
+const getAllPowerServices = async (filters: IPowerServiceFilterRequest) => {
+  const { searchTerm, minPrice, maxPrice } = filters;
+  const limit = filters.limit ? Number(filters.limit) : 10;
+  const page = filters.page ? Number(filters.page) : 1;
+  const skip = (page - 1) * limit;
+  const andConditions: Prisma.PowerServiceWhereInput[] = [
+    { deletedAt: null },
+    { status: ServiceStatus.ACTIVE },
+  ];
+
+  if (searchTerm) {
+    andConditions.push({
+      OR: [
+        { name: { contains: searchTerm, mode: "insensitive" } },
+        { description: { contains: searchTerm, mode: "insensitive" } },
+        { capacity: { contains: searchTerm, mode: "insensitive" } },
+      ],
+    });
+  }
+
+  if (minPrice || maxPrice) {
+    andConditions.push({
+      price: {
+        gte: minPrice ? parseFloat(minPrice) : undefined,
+        lte: maxPrice ? parseFloat(maxPrice) : undefined,
+      },
+    });
+  }
+
+  const whereConditions: Prisma.PowerServiceWhereInput =
+    andConditions.length > 0 ? { AND: andConditions } : {};
+
+  const totalServices =  await prisma.powerService.findMany({
+    where: whereConditions,
+    include: {
+      provider: {
+        select: {
+          id: true,
+          address: true,
+          businessName: true,
+          phone: true,
+        },
+      },
+    },
+    take: limit,
+    skip,
+    orderBy: { createdAt: "desc" },
+  });
+
+  const totalServicesCount = await prisma.powerService.count({
+    where: whereConditions,
+  });
+
+  return {
+    data: totalServices,
+    meta: {
+      page,
+      limit,
+      total: totalServicesCount,
+      totalPages: Math.ceil(totalServicesCount / limit),
+    },
+  };
+
+
+};
+
+const getSinglePowerService = async (id: string) => {
+  const result = await prisma.powerService.findFirst({
+    where: {
+      id,
+      deletedAt: null,
+    },
+    include: {
+      provider: {
+        include: {
+          user: {
+            select: {
+              name: true,
+              email: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, "Power service not found");
+  }
 
   return result;
 };
@@ -109,8 +204,6 @@ const updatePowerServiceStatus = async (
     data: { status: payload.status },
   });
 
-
-
   return result;
 };
 
@@ -147,5 +240,7 @@ export const PowerServiceService = {
   getMyPowerServices,
   updatePowerService,
   deletePowerService,
-  updatePowerServiceStatus
+  updatePowerServiceStatus,
+  getAllPowerServices,
+  getSinglePowerService,
 };
