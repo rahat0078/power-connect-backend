@@ -30,6 +30,13 @@ router.patch(
   PowerServiceController.updatePowerService,
 );
 
+router.patch(
+  '/status/:id',
+  auth(Role.PROVIDER),
+  validateRequest(PowerServiceValidation.updatePowerServiceStatusZodSchema),
+  PowerServiceController.updatePowerServiceStatus
+);
+
 router.delete(
   "/:id",
   auth(Role.PROVIDER),

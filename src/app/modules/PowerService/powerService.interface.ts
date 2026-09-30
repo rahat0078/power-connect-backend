@@ -16,3 +16,6 @@ export type IUpdatePowerServicePayload = {
   capacity?: string;
 };
 
+export type IUpdatePowerServiceStatusPayload = {
+  status: ServiceStatus;
+};

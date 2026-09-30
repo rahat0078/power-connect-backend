@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ServiceStatus } from "../../../generated/prisma/enums";
 
 const createPowerServiceZodSchema = z.object({
   body: z.object({
@@ -18,7 +19,12 @@ const updatePowerServiceZodSchema = z.object({
   capacity: z.string().optional(),
 });
 
+const updatePowerServiceStatusZodSchema = z.object({
+  status: z.nativeEnum(ServiceStatus, "Status is required"),
+});
+
 export const PowerServiceValidation = {
   createPowerServiceZodSchema,
   updatePowerServiceZodSchema,
+  updatePowerServiceStatusZodSchema,
 };

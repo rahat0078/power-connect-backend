@@ -48,6 +48,19 @@ const updatePowerService = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updatePowerServiceStatus = catchAsync(async (req: Request, res: Response) => {
+  const {userId} = req.user!;
+  const { id } = req.params;
+  const result = await PowerServiceService.updatePowerServiceStatus(userId, id as string, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Power Service status updated successfully',
+    data: result,
+  });
+});
+
 
 const deletePowerService = catchAsync(async (req: Request, res: Response) => {
   const {userId} = req.user!;
@@ -67,4 +80,5 @@ export const PowerServiceController = {
   getMyPowerServices,
   updatePowerService,
   deletePowerService,
+  updatePowerServiceStatus
 };
