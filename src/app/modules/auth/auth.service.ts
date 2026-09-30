@@ -79,7 +79,7 @@ const registerUser = async (payload: IRegisterPayload) => {
     name,
     email,
     otpValue,
-    expirationMinutes,
+    expirationMinutes: expirationMinutes / 60,
   });
 
   await transporter.sendMail({
