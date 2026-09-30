@@ -9,6 +9,7 @@ import { AuthRoutes } from "./app/modules/auth/auth.route";
 import { ScheduleRoutes } from "./app/modules/schedule/schedule.route";
 import { OutageReportRoutes } from "./app/modules/outageReport/outageReport.route";
 import { ProviderRoutes } from "./app/modules/provider/provider.route";
+import { PowerServiceRoutes } from "./app/modules/PowerService/powerService.route";
 
 const app: Application = express();
 
@@ -30,6 +31,7 @@ app.use("/api/v1/auth", AuthRoutes);
 app.use("/api/v1/schedule", ScheduleRoutes);
 app.use("/api/v1/outage-reports", OutageReportRoutes);
 app.use("/api/v1/providers", ProviderRoutes);
+app.use("/api/v1/services", PowerServiceRoutes);
 
 // Basic route
 app.get("/", async (req: Request, res: Response) => {
