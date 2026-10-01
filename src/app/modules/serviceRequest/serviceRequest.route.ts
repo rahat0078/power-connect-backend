@@ -21,6 +21,18 @@ router.get(
   ServiceRequestController.getMyServiceRequests
 );
 
+router.get(
+  '/provider-requests',
+  auth(Role.PROVIDER),
+  ServiceRequestController.getProviderServiceRequests
+);
+
+router.patch(
+  '/status/:id',
+  auth(Role.PROVIDER),
+  validateRequest(ServiceRequestValidation.updateServiceRequestStatusZodSchema),
+  ServiceRequestController.updateServiceRequestStatus
+);
 
 
 export const ServiceRequestRoutes = router;

@@ -1,5 +1,8 @@
 import httpStatus from "http-status";
-import { ICreateServiceRequestPayload } from "./serviceRequest.interface";
+import {
+  ICreateServiceRequestPayload,
+  IUpdateServiceRequestStatusPayload,
+} from "./serviceRequest.interface";
 import { prisma } from "../../lib/prisma";
 import { RequestStatus, ServiceStatus } from "../../../generated/prisma/enums";
 import { AppError } from "../../utils/AppError";
@@ -67,7 +70,86 @@ const getMyServiceRequests = async (userId: string) => {
   });
 };
 
+const getProviderServiceRequests = async (userId: string) => {
+  const provider = await prisma.providerProfile.findUnique({
+    where: { userId },
+  });
+
+  if (!provider) {
+    throw new AppError(httpStatus.NOT_FOUND, "Provider profile not found");
+  }
+
+  return await prisma.serviceRequest.findMany({
+    where: {
+      providerId: provider.id,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+      service: true,
+      payment: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+};
+
+const updateServiceRequestStatus = async (
+  userId: string,
+  id: string,
+  payload: IUpdateServiceRequestStatusPayload,
+) => {
+  const provider = await prisma.providerProfile.findUnique({
+    where: { userId },
+  });
+
+  if (!provider) {
+    throw new AppError(httpStatus.NOT_FOUND, "Provider profile not found");
+  }
+
+  const isExist = await prisma.serviceRequest.findFirst({
+    where: { id, providerId: provider.id },
+  });
+
+  if (!isExist) {
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "Service request not found or unauthorized",
+    );
+  }
+
+  if (isExist.status !== RequestStatus.PENDING) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      `Cannot update status from ${isExist.status} to ${payload.status}`,
+    );
+  }
+  if (
+    payload.status === RequestStatus.COMPLETED ||
+    payload.status === RequestStatus.IN_PROGRESS ||
+    payload.status === RequestStatus.PENDING
+  ) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      `You can only ACCEPTED or CANCELED the request`,
+    );
+  }
+
+  const result = await prisma.serviceRequest.update({
+    where: { id },
+    data: { status: payload.status },
+  });
+  
+  return result;
+};
+
 export const ServiceRequestService = {
   createServiceRequest,
   getMyServiceRequests,
+  getProviderServiceRequests,
+  updateServiceRequestStatus,
 };
