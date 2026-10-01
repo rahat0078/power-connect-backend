@@ -46,4 +46,10 @@ router.patch(
   ServiceRequestController.cancelServiceRequest
 );
 
+router.get(
+  '/common/:id',
+  auth(Role.RESIDENT, Role.PROVIDER, Role.ADMIN),
+  ServiceRequestController.getSingleServiceRequest
+);
+
 export const ServiceRequestRoutes = router;

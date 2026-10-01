@@ -4,8 +4,14 @@ import {
   IUpdateServiceRequestStatusPayload,
 } from "./serviceRequest.interface";
 import { prisma } from "../../lib/prisma";
-import { RequestStatus, ServiceStatus } from "../../../generated/prisma/enums";
+import {
+  RequestStatus,
+  Role,
+  ServiceStatus,
+} from "../../../generated/prisma/enums";
 import { AppError } from "../../utils/AppError";
+import { RequestUser } from "../../types";
+import { Prisma } from "../../../generated/prisma/client";
 
 const createServiceRequest = async (
   userId: string,
@@ -183,10 +189,7 @@ const completeServiceRequest = async (userId: string, id: string) => {
 };
 
 // Cancel Service Request (RESIDENT) own before payment\\ only pending or accepted requests
-const cancelServiceRequest = async (
-  userId: string,
-  id: string,
-)=> {
+const cancelServiceRequest = async (userId: string, id: string) => {
   const isExist = await prisma.serviceRequest.findFirst({
     where: { id, userId },
   });
@@ -198,7 +201,6 @@ const cancelServiceRequest = async (
     );
   }
 
-  
   if (
     isExist.status !== RequestStatus.PENDING &&
     isExist.status !== RequestStatus.ACCEPTED
@@ -213,16 +215,46 @@ const cancelServiceRequest = async (
     where: { id },
     data: { status: RequestStatus.CANCELLED },
   });
-
-
   return result;
 };
 
+const getSingleServiceRequest = async (user: RequestUser, id: string) => {
+  const where: Prisma.ServiceRequestWhereInput = {
+    id,
+  };
+
+  if (user.role === Role.RESIDENT) {
+    where.userId = user.userId;
+  }
+
+  if (user.role === Role.PROVIDER) {
+    where.provider = {
+      userId: user.userId,
+    };
+  }
+
+  const result = await prisma.serviceRequest.findFirst({
+    where,
+    include: {
+      user: true,
+      service: true,
+      provider: true,
+      payment: true,
+    },
+  });
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, "Service request not found");
+  }
+
+  return result;
+};
 export const ServiceRequestService = {
   createServiceRequest,
   getMyServiceRequests,
   getProviderServiceRequests,
   updateServiceRequestStatus,
   completeServiceRequest,
-  cancelServiceRequest
+  cancelServiceRequest,
+  getSingleServiceRequest,
 };
