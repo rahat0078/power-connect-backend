@@ -34,5 +34,16 @@ router.patch(
   ServiceRequestController.updateServiceRequestStatus
 );
 
+router.patch(
+  '/:id/complete',
+  auth(Role.PROVIDER),
+  ServiceRequestController.completeServiceRequest
+);
+
+router.patch(
+  '/:id/cancel',
+  auth(Role.RESIDENT),
+  ServiceRequestController.cancelServiceRequest
+);
 
 export const ServiceRequestRoutes = router;

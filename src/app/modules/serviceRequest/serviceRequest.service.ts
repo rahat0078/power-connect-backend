@@ -143,7 +143,78 @@ const updateServiceRequestStatus = async (
     where: { id },
     data: { status: payload.status },
   });
+
+  return result;
+};
+// completeServiceRequest Providers own
+const completeServiceRequest = async (userId: string, id: string) => {
+  const provider = await prisma.providerProfile.findUnique({
+    where: { userId },
+  });
+
+  if (!provider) {
+    throw new AppError(httpStatus.NOT_FOUND, "Provider profile not found");
+  }
+
+  const isExist = await prisma.serviceRequest.findFirst({
+    where: { id, providerId: provider.id },
+  });
+
+  if (!isExist) {
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "Service request not found or unauthorized",
+    );
+  }
+
+  if (isExist.status !== RequestStatus.IN_PROGRESS) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Only requests currently IN_PROGRESS can be marked as COMPLETED",
+    );
+  }
+
+  const result = await prisma.serviceRequest.update({
+    where: { id },
+    data: { status: RequestStatus.COMPLETED },
+  });
+
+  return result;
+};
+
+// Cancel Service Request (RESIDENT) own before payment\\ only pending or accepted requests
+const cancelServiceRequest = async (
+  userId: string,
+  id: string,
+)=> {
+  const isExist = await prisma.serviceRequest.findFirst({
+    where: { id, userId },
+  });
+
+  if (!isExist) {
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "Service request not found or unauthorized",
+    );
+  }
+
   
+  if (
+    isExist.status !== RequestStatus.PENDING &&
+    isExist.status !== RequestStatus.ACCEPTED
+  ) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Cannot cancel request once service is in progress or completed",
+    );
+  }
+
+  const result = await prisma.serviceRequest.update({
+    where: { id },
+    data: { status: RequestStatus.CANCELLED },
+  });
+
+
   return result;
 };
 
@@ -152,4 +223,6 @@ export const ServiceRequestService = {
   getMyServiceRequests,
   getProviderServiceRequests,
   updateServiceRequestStatus,
+  completeServiceRequest,
+  cancelServiceRequest
 };

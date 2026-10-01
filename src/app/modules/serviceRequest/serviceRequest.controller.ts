@@ -64,6 +64,35 @@ const updateServiceRequestStatus = catchAsync(
   },
 );
 
+
+const completeServiceRequest = catchAsync(async (req: Request, res: Response) => {
+ const { userId } = req.user!;
+  const { id } = req.params;
+  const result = await ServiceRequestService.completeServiceRequest(userId, id as string);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Service request completed successfully',
+    data: result,
+  });
+});
+
+const cancelServiceRequest = catchAsync(async (req: Request, res: Response) => {
+ const { userId } = req.user!;
+  const { id } = req.params;
+  const result = await ServiceRequestService.cancelServiceRequest(userId, id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Service request cancelled successfully',
+    data: result,
+  });
+});
+
+
+
 export const ServiceRequestController = {
   createServiceRequest,
   getMyServiceRequests,
