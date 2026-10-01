@@ -81,7 +81,7 @@ const completeServiceRequest = catchAsync(async (req: Request, res: Response) =>
 const cancelServiceRequest = catchAsync(async (req: Request, res: Response) => {
  const { userId } = req.user!;
   const { id } = req.params;
-  const result = await ServiceRequestService.cancelServiceRequest(userId, id);
+  const result = await ServiceRequestService.cancelServiceRequest(userId, id as string);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -98,4 +98,6 @@ export const ServiceRequestController = {
   getMyServiceRequests,
   getProviderServiceRequests,
   updateServiceRequestStatus,
+  completeServiceRequest,
+  cancelServiceRequest
 };

@@ -35,13 +35,13 @@ router.patch(
 );
 
 router.patch(
-  '/:id/complete',
+  '/complete/:id',
   auth(Role.PROVIDER),
   ServiceRequestController.completeServiceRequest
 );
 
 router.patch(
-  '/:id/cancel',
+  '/cancel-resident/:id',
   auth(Role.RESIDENT),
   ServiceRequestController.cancelServiceRequest
 );
