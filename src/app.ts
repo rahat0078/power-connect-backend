@@ -13,6 +13,7 @@ import { PowerServiceRoutes } from "./app/modules/PowerService/powerService.rout
 import { ServiceRequestRoutes } from "./app/modules/serviceRequest/serviceRequest.route";
 import { PaymentRoutes } from "./app/modules/payment/payment.route";
 import { PaymentController } from "./app/modules/payment/payment.controller";
+import { AdminRoutes } from "./app/modules/admin/admin.route";
 
 const app: Application = express();
 
@@ -43,6 +44,7 @@ app.use("/api/v1/providers", ProviderRoutes);
 app.use("/api/v1/services", PowerServiceRoutes);
 app.use("/api/v1/service-requests", ServiceRequestRoutes);
 app.use("/api/v1/payments", PaymentRoutes);
+app.use("/api/v1/admin", AdminRoutes);
 
 
 // Basic route
