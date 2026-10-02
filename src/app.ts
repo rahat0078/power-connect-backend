@@ -11,6 +11,7 @@ import { OutageReportRoutes } from "./app/modules/outageReport/outageReport.rout
 import { ProviderRoutes } from "./app/modules/provider/provider.route";
 import { PowerServiceRoutes } from "./app/modules/PowerService/powerService.route";
 import { ServiceRequestRoutes } from "./app/modules/serviceRequest/serviceRequest.route";
+import { PaymentRoutes } from "./app/modules/payment/payment.route";
 
 const app: Application = express();
 
@@ -34,6 +35,8 @@ app.use("/api/v1/outage-reports", OutageReportRoutes);
 app.use("/api/v1/providers", ProviderRoutes);
 app.use("/api/v1/services", PowerServiceRoutes);
 app.use("/api/v1/service-requests", ServiceRequestRoutes);
+app.use("/api/v1/payments", PaymentRoutes);
+
 
 // Basic route
 app.get("/", async (req: Request, res: Response) => {

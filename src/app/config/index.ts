@@ -24,5 +24,6 @@ export default {
   google_client_id: process.env.GOOGLE_CLIENT_ID!,
   seed_admin_email: process.env.SEED_ADMIN_EMAIL!,
   seed_admin_password: process.env.SEED_ADMIN_PASSWORD!,
-  seed_admin_name: process.env.SEED_ADMIN_NAME!
+  seed_admin_name: process.env.SEED_ADMIN_NAME!,
+  stripe_secret_key: process.env.STRIPE_SECRET_KEY!
 };
