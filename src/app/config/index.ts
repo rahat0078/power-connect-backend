@@ -25,5 +25,6 @@ export default {
   seed_admin_email: process.env.SEED_ADMIN_EMAIL!,
   seed_admin_password: process.env.SEED_ADMIN_PASSWORD!,
   seed_admin_name: process.env.SEED_ADMIN_NAME!,
-  stripe_secret_key: process.env.STRIPE_SECRET_KEY!
+  stripe_secret_key: process.env.STRIPE_SECRET_KEY!,
+  endpointSecret: process.env.STRIPE_WEBHOOK_SECRET!,
 };

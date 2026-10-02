@@ -12,6 +12,7 @@ import { ProviderRoutes } from "./app/modules/provider/provider.route";
 import { PowerServiceRoutes } from "./app/modules/PowerService/powerService.route";
 import { ServiceRequestRoutes } from "./app/modules/serviceRequest/serviceRequest.route";
 import { PaymentRoutes } from "./app/modules/payment/payment.route";
+import { PaymentController } from "./app/modules/payment/payment.controller";
 
 const app: Application = express();
 
@@ -20,6 +21,12 @@ app.use(
     origin: config.frontend_url,
     credentials: true,
   }),
+);
+
+app.post(
+  "/api/v1/payments/webhook",
+  express.raw({ type: "application/json" }),
+  PaymentController.handleStripeWebhook,
 );
 
 // Enable URL-encoded form data parsing

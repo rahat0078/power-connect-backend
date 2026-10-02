@@ -13,5 +13,11 @@ router.post(
   validateRequest(PaymentValidation.createPaymentCheckoutZodSchema),
   PaymentController.createPaymentCheckout
 );
+router.post(
+  '/confirm',
+  auth(Role.RESIDENT, Role.ADMIN),
+  validateRequest(PaymentValidation.confirmPaymentZodSchema),
+  PaymentController.confirmPaymentFromFrontend
+);
 
 export const PaymentRoutes = router;

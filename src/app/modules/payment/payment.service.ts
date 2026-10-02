@@ -4,6 +4,8 @@ import { AppError } from "../../utils/AppError";
 import { PaymentMethod, PaymentStatus, RequestStatus } from "../../../generated/prisma/enums";
 import { stripe } from "../../lib/stripe";
 import config from "../../config";
+import Stripe from "stripe";
+import { AuditLogService } from "../auditLog/auditLog.service";
 
 const createPaymentCheckoutIntoDB = async (
   userId: string,
@@ -98,6 +100,58 @@ const createPaymentCheckoutIntoDB = async (
   };
 };
 
+const createPaymentConfirmIntoDB = async (session: Stripe.Checkout.Session) => {
+  if (session.payment_status !== 'paid') {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Payment is not completed');
+  }
+
+  const payment = await prisma.payment.findFirst({
+    where: { transactionId: session.id },
+  });
+
+  if (!payment) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Payment record not found');
+  }
+
+  if (payment.status === PaymentStatus.PAID) {
+    return payment;
+  }
+
+  
+  const transactionResult = await prisma.$transaction(async (tx) => {
+    const updatedPayment = await tx.payment.update({
+      where: { id: payment.id },
+      data: {
+        status: PaymentStatus.PAID,
+      },
+    });
+
+    await tx.serviceRequest.update({
+      where: { id: payment.serviceRequestId },
+      data: {
+        status: RequestStatus.IN_PROGRESS,
+      },
+    });
+
+    return updatedPayment;
+  });
+
+  await AuditLogService.createAuditLog({
+    userId: payment.userId,
+    action: 'PAYMENT_SUCCESS',
+    entity: 'Payment',
+    entityId: payment.id,
+    metadata: {
+      transactionId: session.id,
+      amount: payment.amount,
+      serviceRequestId: payment.serviceRequestId,
+    },
+  });
+
+  return transactionResult;
+};
+
 export const PaymentService = {
   createPaymentCheckoutIntoDB,
+  createPaymentConfirmIntoDB
 };
