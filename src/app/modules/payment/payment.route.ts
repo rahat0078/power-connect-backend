@@ -20,4 +20,16 @@ router.post(
   PaymentController.confirmPaymentFromFrontend
 );
 
+router.get(
+  '/my-history',
+  auth(Role.RESIDENT),
+  PaymentController.getMyAllPaymentHistory
+);
+
+router.get(
+  '/my-history/:id',
+  auth(Role.RESIDENT, Role.PROVIDER, Role.ADMIN),
+  PaymentController.getMySinglePayment
+);
+
 export const PaymentRoutes = router;

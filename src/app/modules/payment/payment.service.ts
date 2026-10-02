@@ -1,7 +1,11 @@
 import httpStatus from "http-status";
 import { prisma } from "../../lib/prisma";
 import { AppError } from "../../utils/AppError";
-import { PaymentMethod, PaymentStatus, RequestStatus } from "../../../generated/prisma/enums";
+import {
+  PaymentMethod,
+  PaymentStatus,
+  RequestStatus,
+} from "../../../generated/prisma/enums";
 import { stripe } from "../../lib/stripe";
 import config from "../../config";
 import Stripe from "stripe";
@@ -49,7 +53,6 @@ const createPaymentCheckoutIntoDB = async (
     );
   }
 
-  
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
@@ -101,8 +104,8 @@ const createPaymentCheckoutIntoDB = async (
 };
 
 const createPaymentConfirmIntoDB = async (session: Stripe.Checkout.Session) => {
-  if (session.payment_status !== 'paid') {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Payment is not completed');
+  if (session.payment_status !== "paid") {
+    throw new AppError(httpStatus.BAD_REQUEST, "Payment is not completed");
   }
 
   const payment = await prisma.payment.findFirst({
@@ -110,14 +113,13 @@ const createPaymentConfirmIntoDB = async (session: Stripe.Checkout.Session) => {
   });
 
   if (!payment) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Payment record not found');
+    throw new AppError(httpStatus.NOT_FOUND, "Payment record not found");
   }
 
   if (payment.status === PaymentStatus.PAID) {
     return payment;
   }
 
-  
   const transactionResult = await prisma.$transaction(async (tx) => {
     const updatedPayment = await tx.payment.update({
       where: { id: payment.id },
@@ -138,8 +140,8 @@ const createPaymentConfirmIntoDB = async (session: Stripe.Checkout.Session) => {
 
   await AuditLogService.createAuditLog({
     userId: payment.userId,
-    action: 'PAYMENT_SUCCESS',
-    entity: 'Payment',
+    action: "PAYMENT_SUCCESS",
+    entity: "Payment",
     entityId: payment.id,
     metadata: {
       transactionId: session.id,
@@ -151,7 +153,66 @@ const createPaymentConfirmIntoDB = async (session: Stripe.Checkout.Session) => {
   return transactionResult;
 };
 
+const getMyAllPaymentHistoryFromDB = async (userId: string) => {
+  return await prisma.payment.findMany({
+    where: { userId },
+    include: {
+      serviceRequest: {
+        include: {
+          service: true,
+          provider: true,
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+};
+
+const getMySinglePaymentFromDB = async (paymentId: string, userId: string) => {
+  const payment = await prisma.payment.findUnique({
+    where: { id: paymentId },
+    include: {
+      serviceRequest: {
+        include: {
+          service: {
+            select: {
+              name: true,
+              capacity: true,
+            },
+          },
+          provider: {
+            select: {
+              businessName: true,
+              user: {
+                select: {
+                  name: true,
+                  email: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!payment) {
+    throw new AppError(httpStatus.NOT_FOUND, "Payment record not found");
+  }
+
+  if (payment.userId !== userId) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You are not authorized to view this payment",
+    );
+  }
+
+  return payment;
+};
+
 export const PaymentService = {
   createPaymentCheckoutIntoDB,
-  createPaymentConfirmIntoDB
+  createPaymentConfirmIntoDB,
+  getMyAllPaymentHistoryFromDB,
+  getMySinglePaymentFromDB,
 };

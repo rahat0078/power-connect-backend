@@ -63,8 +63,35 @@ const handleStripeWebhook = async (req: Request, res: Response) => {
   return res.status(200).send();
 };
 
+const getMyAllPaymentHistory = catchAsync(async (req: Request, res: Response) => {
+ const { userId } = req.user!;
+  const result = await PaymentService.getMyAllPaymentHistoryFromDB(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Payment history fetched successfully',
+    data: result,
+  });
+});
+
+const getMySinglePayment = catchAsync(async (req: Request, res: Response) => {
+ const { userId } = req.user!;
+  const { id } = req.params;
+  const result = await PaymentService.getMySinglePaymentFromDB(id as string, userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Payment details fetched successfully',
+    data: result,
+  });
+});
+
 export const PaymentController = {
   createPaymentCheckout,
   handleStripeWebhook,
-  confirmPaymentFromFrontend
+  confirmPaymentFromFrontend,
+  getMyAllPaymentHistory,
+  getMySinglePayment
 };
