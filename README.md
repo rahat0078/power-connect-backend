@@ -50,7 +50,7 @@ PowerConnect is a robust, scalable, and secure RESTful backend API designed for 
 ---
 ```
 1. Clone the repository
-git clone https://github.com/rahat0078/rent-nest.git
+git clone https://github.com/rahat0078/power-connect-backend.git
 cd power-connect-backend
 
 2. Install dependencies
