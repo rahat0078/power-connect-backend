@@ -7,7 +7,7 @@ PowerConnect is a robust, scalable, and secure RESTful backend API designed for 
 ## 🚀 Live Demo & Documentation
 
 - **Live API Endpoint:** `https://power-connect-backend.vercel.app/api/v1`
-- **Postman Collection Link:** [View Postman Documentation](https://documenter.getpostman.com/view/your-postman-id)
+- **Postman Collection Link:** [View Postman Documentation](https://drive.google.com/file/d/1stVCe0GJK_kKwo4k6S2fiQPjRAZeRrnr/view?usp=sharing)
 - **API Walkthrough Video:** [Watch Demo Video](https://drive.google.com/file/d/your-video-id/view)
 
 ---

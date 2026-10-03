@@ -1,0 +1,1271 @@
+{
+	"info": {
+		"_postman_id": "0f8720bb-c1b6-45a8-bc85-fb7882afdedc",
+		"name": "Power-connect api's",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44587291",
+		"_collection_link": "https://ruhulaminrahat.postman.co/workspace/Ruhul-Amin-Rahat's-Workspace~91d3dd6e-608c-4908-88fa-4045f704fd53/collection/44587291-0f8720bb-c1b6-45a8-bc85-fb7882afdedc?action=share&source=collection_link&creator=44587291"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "register user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Resident\",\n  \"email\": \"resident@powerconnect.com\",\n  \"password\": \"Resident@123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@power.com\",\n  \"password\": \"Admin@12\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "veriy email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"resident@powerconnect.com\",\n    \"otp\": \"571675\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/verify-email",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"verify-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get me",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/refresh-token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "schedule",
+			"item": [
+				{
+					"name": "create schedule",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"area\": \"Kurigram Sadar\",\n    \"startTime\": \"2026-09-29T10:00:00.000Z\",\n    \"endTime\": \"2026-09-29T14:00:00.000Z\",\n    \"description\": \"Scheduled power outage due to maintenance\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/schedule",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update shcedule",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"area\": \"Kurigram Sadar\",\n    \"startTime\": \"2026-09-29T10:00:00.000Z\",\n    \"endTime\": \"2026-09-29T14:00:00.000Z\",\n    \"description\": \"Scheduled power outage due to maintenance\",\n    \"status\": \"ACTIVE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/schedule/e1ac54b4-cc95-4b65-8130-1eb2a4b5be1f",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"schedule",
+								"e1ac54b4-cc95-4b65-8130-1eb2a4b5be1f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all schedules",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/schedule?searchTerm=maintenance&area=Kurigram&status=SCHEDULED&startDate=2026-09-01T00:00:00.000Z&endDate=2026-09-30T23:59:59.000Z&page=1&limit=10&sortBy=startTime&sortOrder=asc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"schedule"
+							],
+							"query": [
+								{
+									"key": "searchTerm",
+									"value": "maintenance"
+								},
+								{
+									"key": "area",
+									"value": "Kurigram"
+								},
+								{
+									"key": "status",
+									"value": "SCHEDULED"
+								},
+								{
+									"key": "startDate",
+									"value": "2026-09-01T00:00:00.000Z"
+								},
+								{
+									"key": "endDate",
+									"value": "2026-09-30T23:59:59.000Z"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "startTime"
+								},
+								{
+									"key": "sortOrder",
+									"value": "asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get single schedule",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/schedule/e1ac54b4-cc95-4b65-8130-1eb2a4b5be1f",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"schedule",
+								"e1ac54b4-cc95-4b65-8130-1eb2a4b5be1f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get single schedule Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/schedule/e1ac54b4-cc95-4b65-8130-1eb2a4b5be1f",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"schedule",
+								"e1ac54b4-cc95-4b65-8130-1eb2a4b5be1f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "outage reports",
+			"item": [
+				{
+					"name": "create outage report/RESIDENT",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"area\": \"Kurigram Sadar\",\n  \"description\": \"Electricity has been unavailable since 10 AM.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/outage-reports",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"outage-reports"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get my outage-report",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/outage-reports/my-reports?searchTerm=Electricity&area=Kurigram&status=PENDING&page=1&limit=10&sortBy=createdAt&sortOrder=desc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"outage-reports",
+								"my-reports"
+							],
+							"query": [
+								{
+									"key": "searchTerm",
+									"value": "Electricity"
+								},
+								{
+									"key": "area",
+									"value": "Kurigram"
+								},
+								{
+									"key": "status",
+									"value": "PENDING"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "createdAt"
+								},
+								{
+									"key": "sortOrder",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get outage-report (Admin only)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/outage-reports?page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"outage-reports"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update status admin",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"RESOLVED\"\n}   ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/outage-reports/62edb58e-f74b-4cc0-a48e-c43c12301109/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"outage-reports",
+								"62edb58e-f74b-4cc0-a48e-c43c12301109",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "provider profile request",
+			"item": [
+				{
+					"name": "apply as provider",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"businessName\": \"Rahat Electrical Services\",\n  \"phone\": \"01712345678\",\n  \"address\": \"Kurigram Sadar, Kurigram\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/providers/apply",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"providers",
+								"apply"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get pending request (admin only)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/providers/pending",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"providers",
+								"pending"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approved request (admin only)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/providers/approve/522f6478-b400-4ba3-8b3b-fde1a808b08a",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"providers",
+								"approve",
+								"522f6478-b400-4ba3-8b3b-fde1a808b08a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reject request (admin only)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/providers/approve/94f3d415-3bc8-44d4-b95e-fefc7a1c00f4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"providers",
+								"approve",
+								"94f3d415-3bc8-44d4-b95e-fefc7a1c00f4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update provider profile info",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"businessName\": \"Rahat Power & Electrical Services\",\n  \"address\": \"College Gate, Kurigram Sadar, Kurigram\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/providers/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"providers",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get provider profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/providers/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"providers",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "power services",
+			"item": [
+				{
+					"name": "create service",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\n    \"name\": \"Premium Residential Solar Installation\",\n    \"description\": \"High-performance solar system with premium panels, inverter, and extended maintenance support.\",\n    \"price\": 65000,\n    \"capacity\": \"8 kW\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/services",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all services (public)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/services",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services"
+							],
+							"query": [
+								{
+									"key": "searchTerm",
+									"value": "dfeij",
+									"disabled": true
+								},
+								{
+									"key": "minPrice",
+									"value": "34",
+									"disabled": true
+								},
+								{
+									"key": "maxPrice",
+									"value": "343",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get signle service (public)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/services/single/e173bb1f-b6ad-4211-9878-11b6c027058a",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"single",
+								"e173bb1f-b6ad-4211-9878-11b6c027058a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update services",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Premium Residential Solar Parts & Services\",\n  \"price\": 6500,\n  \"capacity\": \"6.5 kW\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/services/0897bae6-7d10-444e-9224-4af4c85a8acd",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"0897bae6-7d10-444e-9224-4af4c85a8acd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update service status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"INACTIVE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/services/status/0897bae6-7d10-444e-9224-4af4c85a8acd",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"status",
+								"0897bae6-7d10-444e-9224-4af4c85a8acd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete service (provider)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/services/id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get provider own services",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "payments",
+			"item": [
+				{
+					"name": "create checkout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"serviceRequestId\": \"80f0f388-7020-4b1b-a4bb-051d50264256\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/create-checkout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"create-checkout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get my history",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/my-history",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"my-history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "history/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/my-history/6b3a1795-84ca-4439-9fa5-0a9fa7943335",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"my-history",
+								"6b3a1795-84ca-4439-9fa5-0a9fa7943335"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "service-requests",
+			"item": [
+				{
+					"name": "create requests",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"serviceId\": \"e173bb1f-b6ad-4211-9878-11b6c027058a\",\n  \"address\": \"Mirpur 2, Dhaka\",\n  \"scheduledAt\": \"2026-10-05T10:00:00.000Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/service-requests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"service-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get residents requests resident",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/service-requests/my-requests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"service-requests",
+								"my-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ger providers own service request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/service-requests/provider-requests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"service-requests",
+								"provider-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update request-status Provider",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"ACCEPTED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/service-requests/status/80f0f388-7020-4b1b-a4bb-051d50264256",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"service-requests",
+								"status",
+								"80f0f388-7020-4b1b-a4bb-051d50264256"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update status to complete",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/service-requests/complete/fpojtr9i430orp[o230940-59lt35i95",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"service-requests",
+								"complete",
+								"fpojtr9i430orp[o230940-59lt35i95"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel request Resident before payment",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/service-requests/cancel-resident/sdfjw8uj3jdklj83423jer8u3n",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"service-requests",
+								"cancel-resident",
+								"sdfjw8uj3jdklj83423jer8u3n"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "common get service requst(authorized)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/service-requests/common/ertgf456345rh4756rtyhn577h456",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"service-requests",
+								"common",
+								"ertgf456345rh4756rtyhn577h456"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin api's",
+			"item": [
+				{
+					"name": "get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "STATS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/dashboard-stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"dashboard-stats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view audit logs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/audit-logs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"audit-logs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user role",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"role\": \"PROVIDER\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/admin/users/role/763b5e39-677b-4a96-89e0-a2d9dbba4591",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"users",
+								"role",
+								"763b5e39-677b-4a96-89e0-a2d9dbba4591"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
