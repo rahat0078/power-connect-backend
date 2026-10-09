@@ -22,20 +22,19 @@ const registerUser = catchAsync(async (req: Request, res: Response) => {
 
 const verifyUserEmail = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
-
   const result = await AuthService.verifyUserEmail(payload);
-
   const { accessToken, refreshToken, user } = result;
 
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    secure: false,
-    sameSite: "none",
-    maxAge: 1000 * 60 * 60 * 24, // 24 hour or 1 day
+    secure: true, 
+    sameSite: "none", 
+    maxAge: 1000 * 60 * 60 * 24, // 24 hours
   });
+
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: false,
+    secure: true,
     sameSite: "none",
     maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
   });
@@ -44,29 +43,24 @@ const verifyUserEmail = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.CREATED,
     success: true,
     message: "User registered successfully",
-    data: {
-      accessToken,
-      refreshToken,
-      user,
-    },
+    data: { accessToken, refreshToken, user },
   });
 });
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
-  const { accessToken, refreshToken } = await AuthService.loginUser(payload);
-
-  const secureRes = config.node_env === "development" ? false : true;
+  const { user, accessToken, refreshToken } = await AuthService.loginUser(payload);
 
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    secure: secureRes,
+    secure: true,
     sameSite: "none",
-    maxAge: 1000 * 60 * 60 * 24, // 24 hour or 1 day
+    maxAge: 1000 * 60 * 60 * 24, // 24 hours
   });
+
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: secureRes,
+    secure: true,
     sameSite: "none",
     maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
   });
@@ -75,13 +69,9 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: "User logged in successfully",
-    data: {
-      accessToken,
-      refreshToken,
-    },
+    data: { user, accessToken, refreshToken },
   });
 });
-
 const getMe = catchAsync(async (req: Request, res: Response) => {
   const user = req.user as RequestUser;
 
